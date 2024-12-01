@@ -61,9 +61,8 @@ pub fn convert_to_parquet(
         .build(file)?;
 
     // Determine the target file path
-    let target_file = output_file.unwrap_or_else(|| {
-        file_path.with_extension("parquet")
-    });
+    let target_file = output_file.unwrap_or_else(|| &file_path.with_extension("parquet"));
+
 
     // Delete the output file if it exists
     delete_if_exist(target_file.to_str().unwrap())?;
