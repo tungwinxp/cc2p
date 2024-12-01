@@ -38,11 +38,12 @@ use std::sync::Arc;
 /// }
 /// ```
 
-pub fn convert_to_parquet(
+ppub fn convert_to_parquet(
     file_path: &PathBuf,
     delimiter: char,
     has_header: bool,
     sampling_size: u16,
+    output_file: Option<&PathBuf>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let file = File::open(file_path)?;
 
@@ -59,9 +60,12 @@ pub fn convert_to_parquet(
         .with_header(has_header)
         .build(file)?;
 
-    let target_file = file_path.with_extension("parquet");
+    // Determine the target file path
+    let target_file = output_file.unwrap_or_else(|| {
+        file_path.with_extension("parquet")
+    });
 
-    // delete it if exist
+    // Delete the output file if it exists
     delete_if_exist(target_file.to_str().unwrap())?;
 
     let mut file = File::create(target_file).unwrap();
