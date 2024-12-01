@@ -33,7 +33,7 @@ struct Args {
 
     /// Represents the delimiter used in CSV files.
     #[arg(short, long, default_value_t = String::from(","))]
-    delimiter: String,
+    delimiter: char,
 
     /// Represents whether to include the header in the CSV search column.
     #[arg(short, long, default_value_t = false)]
