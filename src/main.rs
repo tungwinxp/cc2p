@@ -32,7 +32,7 @@ struct Args {
     path: String,
 
     /// Represents the delimiter used in CSV files.
-    #[arg(short, long, default_value_t = String::from(","))]
+    #[arg(short, long, default_value_t = ',')]
     delimiter: char,
 
     /// Represents whether to include the header in the CSV search column.
@@ -82,29 +82,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = args.path.as_str();
     let sampling_size = args.sampling;
     let has_header = !args.no_header;
-//  let delimiter = args.delimiter.as_str().chars().next().unwrap_or(',');
-//  handle the case of \t for tsv recognizing \ as the delim instead of tab char.  
-    fn parse_delimiter(input: &str) -> char {
-        if input.starts_with('\\') {
-            match &input[1..] {
-                "t" => '\t',
-                "n" => '\n',
-                "r" => '\r',
-                "\\" => '\\',
-                "\"" => '"',
-                "'" => '\'',
-                "0" => '\0',
-                _ => { 
-                    eprintln!("Warning: Unsupported escape sequence: \\{}", &input[1..]);
-                    ',' // Default to comma
-                },
-            }
-        } else {
-            input.chars().next().unwrap_or(',')
-        }
-    }
-    // set the delimiter
-    let delimiter = parse_delimiter(&args.delimiter);
+    let delimiter = args.delimiter;
 
     println!(
         "Program arguments\n path: {}\n delimiter: {}\n has header: {} \n worker count: {} \n sampling size {}",
