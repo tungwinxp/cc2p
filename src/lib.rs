@@ -43,7 +43,6 @@ pub fn convert_to_parquet(
     delimiter: char,
     has_header: bool,
     sampling_size: u16,
-    output_file: Option<&PathBuf>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let file = File::open(file_path)?;
 
@@ -60,19 +59,14 @@ pub fn convert_to_parquet(
         .with_header(has_header)
         .build(file)?;
 
-    // Determine the target file path
-    let target_file = if let Some(output) = output_file {
-        output
-    } else {
-        &file_path.with_extension("parquet")
-    };
+    let target_file = file_path.with_extension("parquet");
 
-    // Delete the output file if it exists
+    // delete it if exist
     delete_if_exist(target_file.to_str().unwrap())?;
 
     let mut file = File::create(target_file).unwrap();
     let props = WriterProperties::builder()
-        .set_compression(Compression::LZ4_RAW)
+        .set_compression(Compression::SNAPPY)
         .set_created_by("cc2p".to_string())
         .build();
 
