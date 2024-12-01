@@ -95,7 +95,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     let errors = Arc::new(Mutex::new(Vec::<ErrorData>::new()));
-    let files = find_files(path)?;
+    let files = find_files(path);
 
     let bar = ProgressBar::new(files.len().try_into().unwrap());
     bar.set_style(
