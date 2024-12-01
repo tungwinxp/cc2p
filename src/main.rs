@@ -82,7 +82,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = args.path.as_str();
     let sampling_size = args.sampling;
     let has_header = !args.no_header;
-    let delimiter = args.delimiter.as_str().chars().next().unwrap_or(',');
+//  let delimiter = args.delimiter.as_str().chars().next().unwrap_or(',');
+//  handle the case of \t for tsv recognizing \ as the delim instead of tab char.  
+    fn parse_delimiter(input: &str) -> char {
+    if input.starts_with('\\') {
+        match &input[1..] {
+            "t" => '\t',
+            "n" => '\n',
+            "r" => '\r',
+            "\\" => '\\',
+            "\"" => '"',
+            "'" => '\'',
+            "0" => '\0',
+            _ => { 
+                eprintln!("Warning: Unsupported escape sequence: \\{}", &input[1..]);
+                ',' // Default to comma
+            },
+        }
+    } else {
+        input.chars().next().unwrap_or(',')
+    }
 
     println!(
         "Program arguments\n path: {}\n delimiter: {}\n has header: {} \n worker count: {} \n sampling size {}",
