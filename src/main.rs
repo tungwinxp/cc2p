@@ -9,8 +9,6 @@ use indicatif::{ProgressBar, ProgressStyle};
 use tokio::runtime;
 
 use cc2p::{convert_to_parquet, find_files};
-use parquet::file::properties::WriterProperties;
-use parquet::basic::Compression;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
