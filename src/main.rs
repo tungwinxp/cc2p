@@ -33,7 +33,7 @@ struct Args {
 
     /// Represents the delimiter used in CSV files.
     #[arg(short, long, default_value_t = ',')]
-    delimiter: char,
+    delimiter: String,
 
     /// Represents whether to include the header in the CSV search column.
     #[arg(short, long, default_value_t = false)]
@@ -82,7 +82,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = args.path.as_str();
     let sampling_size = args.sampling;
     let has_header = !args.no_header;
-    let delimiter = args.delimiter;
+    let delimiter = args.delimiter.chars().next().unwrap_or(',');
 
     println!(
         "Program arguments\n path: {}\n delimiter: {}\n has header: {} \n worker count: {} \n sampling size {}",
