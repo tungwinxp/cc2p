@@ -38,7 +38,7 @@ use std::sync::Arc;
 /// }
 /// ```
 
-ppub fn convert_to_parquet(
+pub fn convert_to_parquet(
     file_path: &PathBuf,
     delimiter: char,
     has_header: bool,
@@ -70,7 +70,7 @@ ppub fn convert_to_parquet(
 
     let mut file = File::create(target_file).unwrap();
     let props = WriterProperties::builder()
-        .set_compression(Compression::SNAPPY)
+        .set_compression(Compression::LZ4_RAW)
         .set_created_by("cc2p".to_string())
         .build();
 
