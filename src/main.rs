@@ -103,6 +103,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             input.chars().next().unwrap_or(',')
         }
     }
+    // set the delimiter
+    let delimiter = parse_delimiter(&args.delimiter);
 
     println!(
         "Program arguments\n path: {}\n delimiter: {}\n has header: {} \n worker count: {} \n sampling size {}",
